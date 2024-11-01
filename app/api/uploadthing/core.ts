@@ -38,8 +38,12 @@ export const ourFileRouter = {
     .middleware(() => handleAuth())
     .onUploadComplete(() => {}),
   chapterVideo: f({ video: { maxFileCount: 1, maxFileSize: "512GB" } })
-    .middleware(() => handleAuth())
-    .onUploadComplete(() => {}),
+    // .middleware(() => handleAuth())
+    .onUploadComplete(async ({ metadata, file }) => {
+      console.log("Upload complete for userId:",);
+      console.log("file url", file.url);
+      return {}; // Return an empty object to prevent the JSON parse error
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;

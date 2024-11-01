@@ -2,10 +2,23 @@
 // import { auth } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 // import mux from "@/lib/mux"; // Import the Mux configuration
-
+// import mux from "@/lib/mux"
 import { db } from "@/lib/db";
+import Mux from '@mux/mux-node';
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/app/utils/authOptions";
+
+const { MUX_TOKEN_ID, MUX_TOKEN_SECRET } = process.env; 
+const mux = new Mux({
+  tokenId:MUX_TOKEN_ID,
+  tokenSecret:MUX_TOKEN_SECRET,
+  // : MUX_TOKEN_ID,
+  // secret: MUX_TOKEN_SECRET,
+});
+
+const video = mux.video;  // Assign Video for easier reference
+
+// module.exports = mux;
 
 // const { Video } = new Mux(
 //   process.env.MUX_TOKEN_ID!,
@@ -173,18 +186,19 @@ import { authOptions } from "@/app/utils/authOptions";
           },
         });
       }
-      const asset  = await mux.assets.create({
-        input: values.videoUrl, // Use the file stream for upload
-        playback_policy: "public", // Set playback policy
-        test: false,
-
-      });
-  
-      // const asset = await Video.Assets.create({
-      //   input: values.videoUrl,
-      //   playback_policy: "public",
+      // const asset  = await mux..create({
+      //   input: values.videoUrl, // Use the file stream for upload
+      //   playback_policy: "public", // Set playback policy
       //   test: false,
+
       // });
+  
+      const asset = await video.assets.create({
+        input: values.videoUrl,
+        playback_policy:["public"],
+        // playback_policy: "public",
+        test: false,
+      });
 
       await db.muxData.create({
         data: {
