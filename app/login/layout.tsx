@@ -24,7 +24,7 @@ const LoginLayout = ({ children }: { children: React.ReactNode }) => {
         href="https://unicons.iconscout.com/release/v4.0.0/css/line.css"
       />
 
-      {/* <Header /> */}
+      <Header />
       <div className="pt-[80px] pb-10 h-full">{children}</div>
       <Footer />
       <Script
